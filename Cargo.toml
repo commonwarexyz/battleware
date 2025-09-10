@@ -18,12 +18,13 @@ license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
 # Internal crates
-battleware-client = { path = "client" }
-battleware-node = { path = "node" }
-battleware-execution = { path = "execution", default-features = false }
-battleware-simulator = { path = "simulator" }
-battleware-types = { path = "types" }
-battleware-randotron = { path = "randotron" }
+battleware-client = { version = "0.0.1", path = "client" }
+battleware-node = { version = "0.0.1", path = "node" }
+battleware-execution = { version = "0.0.1", path = "execution", default-features = false }
+battleware-simulator = { version = "0.0.1", path = "simulator" }
+battleware-types = { version = "0.0.1", path = "types" }
+battleware-randotron = { version = "0.0.1", path = "randotron" }
+battleware-deployer = { version = "0.0.1", path = "deployer" }
 
 # Commonware dependencies
 commonware-broadcast = { version = "0.0.62" }
