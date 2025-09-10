@@ -22,6 +22,7 @@ use commonware_cryptography::{ed25519, Hasher, PrivateKeyExt, Sha256, Signer as 
 #[cfg(feature = "testing")]
 use commonware_runtime::{deterministic::Runner, Runner as _};
 use commonware_storage::store::operation::{Keyless, Variable};
+use commonware_utils::hex;
 use rand::rngs::OsRng;
 #[cfg(feature = "testing")]
 use rand::SeedableRng;
@@ -82,7 +83,7 @@ impl Signer {
     /// Get the public key as a hex string.
     #[wasm_bindgen(getter)]
     pub fn public_key_hex(&self) -> String {
-        hex::encode(self.public_key.as_ref())
+        hex(self.public_key.as_ref())
     }
 
     /// Get the private key.
@@ -94,7 +95,7 @@ impl Signer {
     /// Get the private key as a hex string.
     #[wasm_bindgen(getter)]
     pub fn private_key_hex(&self) -> String {
-        hex::encode(self.private_key.as_ref())
+        hex(self.private_key.as_ref())
     }
 
     /// Sign a message.
@@ -275,7 +276,7 @@ fn decode_value(value: Value) -> Result<JsValue, JsValue> {
                         "traits": c.traits.to_vec()
                     })
                 }),
-                "battle": account.battle.map(|b| hex::encode(b.encode())),
+                "battle": account.battle.map(|b| hex(&b.encode())),
                 "elo": account.stats.elo,
                 "wins": account.stats.wins,
                 "losses": account.stats.losses,
@@ -286,7 +287,7 @@ fn decode_value(value: Value) -> Result<JsValue, JsValue> {
             serde_json::json!({
                 "type": "Lobby",
                 "expiry": expiry,
-                "players": players.iter().map(|p| hex::encode(p.encode())).collect::<Vec<_>>()
+                "players": players.iter().map(|p| hex(&p.encode())).collect::<Vec<_>>()
             })
         }
         Value::Battle {
@@ -307,12 +308,12 @@ fn decode_value(value: Value) -> Result<JsValue, JsValue> {
                 "type": "Battle",
                 "expiry": expiry,
                 "round": round,
-                "player_a": hex::encode(player_a.encode()),
+                "player_a": hex(&player_a.encode()),
                 "player_a_max_health": player_a_max_health,
                 "player_a_health": player_a_health,
                 "player_a_pending": player_a_pending.is_some(),
                 "player_a_move_counts": player_a_move_counts.to_vec(),
-                "player_b": hex::encode(player_b.encode()),
+                "player_b": hex(&player_b.encode()),
                 "player_b_max_health": player_b_max_health,
                 "player_b_health": player_b_health,
                 "player_b_pending": player_b_pending.is_some(),
@@ -404,7 +405,7 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
         Event::Generated { account, creature } => {
             serde_json::json!({
                 "type": "Generated",
-                "account": hex::encode(account.encode()),
+                "account": hex(&account.encode()),
                 "creature": {
                     "traits": creature.traits.to_vec()
                 }
@@ -422,9 +423,9 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
         } => {
             serde_json::json!({
                 "type": "Matched",
-                "battle": hex::encode(battle.encode()),
+                "battle": hex(&battle.encode()),
                 "expiry": expiry,
-                "player_a": hex::encode(player_a.encode()),
+                "player_a": hex(&player_a.encode()),
                 "player_a_creature": {
                     "traits": player_a_creature.traits.to_vec()
                 },
@@ -434,7 +435,7 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
                     "losses": player_a_stats.losses,
                     "draws": player_a_stats.draws
                 },
-                "player_b": hex::encode(player_b.encode()),
+                "player_b": hex(&player_b.encode()),
                 "player_b_creature": {
                     "traits": player_b_creature.traits.to_vec()
                 },
@@ -463,15 +464,15 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
         } => {
             serde_json::json!({
                 "type": "Moved",
-                "battle": hex::encode(battle.encode()),
+                "battle": hex(&battle.encode()),
                 "round": round,
                 "expiry": expiry,
-                "player_a": hex::encode(player_a.encode()),
+                "player_a": hex(&player_a.encode()),
                 "player_a_health": player_a_health,
                 "player_a_move": player_a_move,
                 "player_a_move_counts": player_a_move_counts.to_vec(),
                 "player_a_power": player_a_power,
-                "player_b": hex::encode(player_b.encode()),
+                "player_b": hex(&player_b.encode()),
                 "player_b_health": player_b_health,
                 "player_b_move": player_b_move,
                 "player_b_move_counts": player_b_move_counts.to_vec(),
@@ -498,9 +499,9 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
 
             serde_json::json!({
                 "type": "Settled",
-                "battle": hex::encode(battle.encode()),
+                "battle": hex(&battle.encode()),
                 "round": round,
-                "player_a": hex::encode(player_a.encode()),
+                "player_a": hex(&player_a.encode()),
                 "player_a_old": {
                     "elo": player_a_old.elo,
                     "wins": player_a_old.wins,
@@ -513,7 +514,7 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
                     "losses": player_a_new.losses,
                     "draws": player_a_new.draws
                 },
-                "player_b": hex::encode(player_b.encode()),
+                "player_b": hex(&player_b.encode()),
                 "player_b_old": {
                     "elo": player_b_old.elo,
                     "wins": player_b_old.wins,
@@ -539,11 +540,11 @@ fn decode_event(event: &Event) -> Result<serde_json::Value, JsValue> {
         } => {
             serde_json::json!({
                 "type": "Locked",
-                "battle": hex::encode(battle.encode()),
+                "battle": hex(&battle.encode()),
                 "round": round,
-                "locker": hex::encode(locker.encode()),
-                "observer": hex::encode(observer.encode()),
-                "ciphertext": hex::encode(ciphertext.encode())
+                "locker": hex(&locker.encode()),
+                "observer": hex(&observer.encode()),
+                "ciphertext": hex(&ciphertext.encode())
             })
         }
     };
@@ -686,7 +687,7 @@ fn process_output(output: &Output) -> Result<serde_json::Value, JsValue> {
             Ok(serde_json::json!({
                 "type": "Transaction",
                 "nonce": tx.nonce,
-                "public": hex::encode(&tx.public),
+                "public": hex(&tx.public),
                 "instruction": instruction
             }))
         }
