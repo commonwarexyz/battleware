@@ -1,0 +1,27 @@
+[package]
+name = "battleware-execution"
+edition.workspace = true
+publish = true
+version.workspace = true
+license.workspace = true
+description = "Execution environment for battleware."
+readme = "README.md"
+homepage = "https://battleware.xyz"
+repository = "https://github.com/commonwarexyz/battleware/tree/main/execution"
+documentation = "https://docs.rs/battleware-execution"
+
+[dependencies]
+battleware-types = { workspace = true }
+commonware-codec = { workspace = true }
+commonware-cryptography = { workspace = true }
+commonware-utils = { workspace = true }
+commonware-consensus = { workspace = true }
+commonware-runtime = { workspace = true }
+commonware-storage = { workspace = true }
+bytes = { workspace = true }
+rand = { workspace = true }
+rayon = { workspace = true, optional = true }
+
+[features]
+parallel = ["rayon"]
+mocks = []

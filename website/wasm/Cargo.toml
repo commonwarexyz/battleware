@@ -1,0 +1,35 @@
+[package]
+name = "battleware-wasm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = []
+testing = ["battleware-execution/mocks"]
+
+[dependencies]
+# WASM specific dependencies
+wasm-bindgen = "0.2"
+serde-wasm-bindgen = "0.6"
+getrandom = { version = "0.2", features = ["js"] }
+
+# Workspace dependencies
+battleware-execution = { workspace = true, default-features = false }
+battleware-types = { workspace = true }
+commonware-codec = { workspace = true }
+commonware-consensus = { workspace = true }
+commonware-cryptography = { workspace = true }
+commonware-runtime = { workspace = true }
+commonware-storage = { workspace = true }
+hex = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+battleware-wasm = { path = ".", features = ["testing"] }

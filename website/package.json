@@ -1,0 +1,34 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run build:wasm && vite",
+    "build": "npm run build:wasm && vite build",
+    "preview": "npm run build && vite preview",
+    "build:wasm": "cd wasm && wasm-pack build --target web --out-dir pkg",
+    "build:wasm-test": "cd wasm && wasm-pack build --target web --out-dir pkg -- --features testing",
+    "pretest": "cd .. && cargo build --release --bin battleware-simulator",
+    "test": "npm run build:wasm-test && node --test test/*.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.11",
+    "vite": "^6.3.5"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.18.3"
+  }
+}

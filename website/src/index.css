@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import "tailwindcss";
+
+@layer theme {
+  :root {
+    --text-xs: 0.625rem;
+    --text-sm: 0.75rem;
+    --text-base: 0.875rem;
+    --text-lg: 1rem;
+    --text-xl: 1.125rem;
+    --text-2xl: 1.25rem;
+    --text-3xl: 1.5rem;
+    --text-4xl: 1.875rem;
+    --text-5xl: 2.25rem;
+    --text-6xl: 2.5rem;
+    --text-7xl: 3rem;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Press Start 2P', Consolas, Monaco, 'Courier New', monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+  background-color: #0000ee;
+}
+
+/* Global retro styles */
+* {
+  font-family: 'Press Start 2P', Consolas, Monaco, 'Courier New', monospace !important;
+}
+
+/* Remove all gradients and shadows */
+.bg-gradient-to-r,
+.bg-gradient-to-b,
+.bg-gradient-to-t,
+.bg-gradient-to-l,
+[class*="shadow"] {
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Retro button styles */
+button {
+  transition: all 0.1s ease;
+}
+
+/* Ensure no smooth scrolling */
+html {
+  scroll-behavior: auto;
+}
+
+/* Force border colors */
+.border-retro-white {
+  border-color: #ffffff !important;
+}
+
+.border-retro-blue {
+  border-color: #0000ee !important;
+}
+
+/* Force background colors */
+.bg-retro-white {
+  background-color: #ffffff !important;
+}
+
+.bg-retro-blue {
+  background-color: #0000ee !important;
+}
+
+/* Force text colors */
+.text-retro-white {
+  color: #ffffff !important;
+}
+
+.text-retro-blue {
+  color: #0000ee !important;
+}
+
+/* Hover states for buttons */
+.hover\:bg-retro-white:hover {
+  background-color: #ffffff !important;
+}
+
+.hover\:text-retro-blue:hover {
+  color: #0000ee !important;
+}
+
+.hover\:border-retro-blue:hover {
+  border-color: #0000ee !important;
+}
+
+/* Group hover states */
+.group:hover .group-hover\:text-retro-blue {
+  color: #0000ee !important;
+}
+
+.group:hover .group-hover\:text-retro-white {
+  color: #ffffff !important;
+}
+
+/* Textured/pixelated white background - ASCII dithering style */
+.bg-textured-white {
+  background-color: #ffffff !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Create ASCII-style texture using CSS pattern */
+.bg-textured-white::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      rgba(0, 0, 238, 0.3) 0px,
+      rgba(0, 0, 238, 0.3) 1px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 0, 238, 0.2) 2px,
+      rgba(0, 0, 238, 0.2) 3px,
+      transparent 3px,
+      transparent 4px),
+    repeating-linear-gradient(90deg,
+      rgba(0, 0, 238, 0.25) 0px,
+      rgba(0, 0, 238, 0.25) 1px,
+      transparent 1px,
+      transparent 3px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Add subtle noise overlay for retro feel */
+.bg-textured-white::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(0, 0, 238, 0.1) 0deg,
+      transparent 90deg,
+      rgba(0, 0, 238, 0.1) 180deg,
+      transparent 270deg);
+  background-size: 2px 2px;
+  pointer-events: none;
+}
+
+/* Textured/pixelated blue background - ASCII dithering style */
+.bg-textured-blue {
+  background-color: #0000ee !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Create ASCII-style texture using CSS pattern */
+.bg-textured-blue::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      rgba(255, 255, 255, 0.3) 0px,
+      rgba(255, 255, 255, 0.3) 1px,
+      transparent 1px,
+      transparent 2px,
+      rgba(255, 255, 255, 0.2) 2px,
+      rgba(255, 255, 255, 0.2) 3px,
+      transparent 3px,
+      transparent 4px),
+    repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.25) 0px,
+      rgba(255, 255, 255, 0.25) 1px,
+      transparent 1px,
+      transparent 3px);
+  background-size: 4px 4px;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Add subtle noise overlay for retro feel */
+.bg-textured-blue::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(255, 255, 255, 0.1) 0deg,
+      transparent 90deg,
+      rgba(255, 255, 255, 0.1) 180deg,
+      transparent 270deg);
+  background-size: 2px 2px;
+  pointer-events: none;
+}
+
+/* Slide-in animation for new events */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.2s ease-out;
+}

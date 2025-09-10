@@ -1,0 +1,36 @@
+[package]
+name = "battleware-client"
+edition.workspace = true
+publish = true
+version.workspace = true
+license.workspace = true
+description = "SDK for interacting with battleware."
+homepage = "https://battleware.xyz"
+repository = "https://github.com/commonwarexyz/battleware/tree/main/client"
+documentation = "https://docs.rs/battleware-client"
+readme = "README.md"
+
+[dependencies]
+battleware-execution = { workspace = true, features = ["mocks"] }
+battleware-types = { workspace = true }
+commonware-codec = { workspace = true }
+commonware-consensus = { workspace = true }
+commonware-cryptography = { workspace = true }
+commonware-utils = { workspace = true }
+tokio = { workspace = true }
+tokio-tungstenite = { workspace = true }
+futures-util = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+url = { workspace = true }
+thiserror = { workspace = true }
+hex = { workspace = true }
+futures = { workspace = true }
+
+[dev-dependencies]
+battleware-simulator = { workspace = true }
+axum = { workspace = true }
+commonware-runtime = { workspace = true }
+commonware-storage = { workspace = true }
+rand = { workspace = true }

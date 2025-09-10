@@ -1,0 +1,21 @@
+[package]
+name = "battleware-types"
+edition.workspace = true
+publish = true
+version.workspace = true
+license.workspace = true
+description = "Common types used throughout battleware."
+readme = "README.md"
+homepage = "https://battleware.xyz"
+repository = "https://github.com/commonwarexyz/battleware/tree/main/types"
+documentation = "https://docs.rs/battleware-types"
+
+[dependencies]
+commonware-codec = { workspace = true }
+commonware-consensus = { workspace = true }
+commonware-cryptography = { workspace = true }
+commonware-storage = { workspace = true }
+commonware-utils = { workspace = true }
+bytes = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

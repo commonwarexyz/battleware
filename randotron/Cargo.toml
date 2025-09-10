@@ -1,0 +1,37 @@
+[package]
+name = "battleware-randotron"
+publish = true
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Simple bot that randomly plays battleware."
+readme = "README.md"
+homepage = "https://battleware.xyz"
+repository = "https://github.com/commonwarexyz/battleware/tree/main/randotron"
+documentation = "https://docs.rs/battleware-randotron"
+
+[dependencies]
+battleware-client = { workspace = true }
+battleware-types = { workspace = true }
+commonware-cryptography = { workspace = true }
+commonware-codec = { workspace = true }
+commonware-consensus = { workspace = true }
+commonware-macros = { workspace = true }
+commonware-storage = { workspace = true }
+commonware-utils = { workspace = true }
+commonware-runtime = { workspace = true }
+bytes = { workspace = true }
+clap = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rand = { workspace = true }
+futures = { workspace = true }
+rand_chacha = { workspace = true }
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+anyhow = { workspace = true }
+
+[dev-dependencies]
+battleware-execution = { workspace = true }
+commonware-runtime = { workspace = true }

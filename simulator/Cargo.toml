@@ -1,0 +1,32 @@
+[package]
+name = "battleware-simulator"
+edition.workspace = true
+publish = true
+version.workspace = true
+license.workspace = true
+description = "Local backend for battleware."
+readme = "README.md"
+homepage = "https://battleware.xyz"
+repository = "https://github.com/commonwarexyz/battleware/tree/main/simulator"
+documentation = "https://docs.rs/battleware-simulator"
+
+[dependencies]
+battleware-execution = { workspace = true }
+battleware-types = { workspace = true }
+commonware-codec = { workspace = true }
+commonware-consensus = { workspace = true }
+commonware-cryptography = { workspace = true }
+commonware-runtime = { workspace = true }
+commonware-storage = { workspace = true }
+commonware-utils = { workspace = true }
+bytes = { workspace = true }
+rand = { workspace = true }
+tokio = { workspace = true }
+axum = { workspace = true }
+tower = { workspace = true }
+tower-http = { version = "0.6", features = ["cors"] }
+futures = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap = { workspace = true }
+thiserror = { workspace = true }
