@@ -278,7 +278,6 @@ function App() {
       // The event handler in handleEvent will update the UI when the Generated event arrives
     } catch (err) {
       console.error('Failed to generate character:', err);
-      alert('Failed to generate character: ' + err.message);
     }
   };
 
@@ -295,7 +294,6 @@ function App() {
       // Wait for match event
     } catch (err) {
       console.error('Failed to enter matchmaking:', err);
-      alert('Failed to enter matchmaking: ' + err.message);
     }
   };
 
