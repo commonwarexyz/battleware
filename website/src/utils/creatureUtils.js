@@ -12,32 +12,10 @@ export const generateCreatureName = (traits) => {
     'blade', 'spark', 'volt', 'wave', 'burst', 'flash', 'surge', 'force',
     'beast', 'titan', 'fury', 'blitz', 'drake', 'phoenix', 'hydra', 'sphinx'];
 
-  const prefixIndex = (traits[6] + traits[7]) % prefixes.length;
-  const suffixIndex = (traits[8] + traits[9]) % suffixes.length;
+  const prefixIndex = traits[5] % prefixes.length;
+  const suffixIndex = traits[6] % suffixes.length;
 
   return prefixes[prefixIndex] + suffixes[suffixIndex];
-};
-
-export const generateMoveNames = (traits) => {
-  const defenseNames = ['Barrier', 'Shield', 'Guard', 'Protect', 'Restore', 'Heal', 'Recover', 'Mend',
-    'Aegis', 'Ward', 'Fortify', 'Deflect', 'Absorb', 'Regenerate', 'Sanctuary', 'Bulwark',
-    'Armor', 'Cocoon', 'Mirror', 'Counter', 'Parry', 'Evade', 'Cloak', 'Veil'];
-  const attackPrefixes = ['Fire', 'Ice', 'Thunder', 'Shadow', 'Mega', 'Hyper', 'Ultra', 'Giga',
-    'Plasma', 'Cosmic', 'Chaos', 'Primal', 'Divine', 'Infernal', 'Spectral', 'Quantum',
-    'Vortex', 'Nebula', 'Crystal', 'Adamant', 'Ethereal', 'Temporal', 'Dimensional', 'Apocalypse'];
-  const attackSuffixes = ['Strike', 'Blast', 'Punch', 'Kick', 'Slash', 'Beam', 'Wave', 'Claw',
-    'Cannon', 'Storm', 'Barrage', 'Eruption', 'Cyclone', 'Meteor', 'Comet', 'Nova',
-    'Burst', 'Crush', 'Rend', 'Shatter', 'Devastate', 'Annihilate', 'Obliterate', 'Pulverize'];
-
-  return {
-    defense: defenseNames[(traits[16] + traits[17]) % defenseNames.length],
-    attack1: attackPrefixes[traits[18] % attackPrefixes.length] + ' ' +
-      attackSuffixes[traits[19] % attackSuffixes.length],
-    attack2: attackPrefixes[traits[20] % attackPrefixes.length] + ' ' +
-      attackSuffixes[traits[21] % attackSuffixes.length],
-    attack3: attackPrefixes[traits[22] % attackPrefixes.length] + ' ' +
-      attackSuffixes[traits[23] % attackSuffixes.length]
-  };
 };
 
 export const generateCreatureASCII = (traits) => {
@@ -52,21 +30,20 @@ export const generateCreatureASCII = (traits) => {
     '⊙', '⊚', '⊛', '⊜', '⊝', '◎', '◍', '◌',
     '☀', '☁', '☂', '☃', '★', '☆', '✦', '✧'].map(e => e + textVariant);
 
-  const pattern = patterns[traits[10] % patterns.length];
-  const eyeType = eyes[traits[11] % eyes.length];
-  const eyePattern = [eyeType, eyeType];
+  const pattern = patterns[traits[7] % patterns.length];
+  const eye = eyes[traits[8] % eyes.length];
 
   // Determine body shape based on traits
   const shapeTypes = ['round', 'spiky', 'tall', 'wide', 'angular', 'curved', 'compact', 'elongated',
     'hexagonal', 'triangular', 'diamond', 'crystalline', 'mechanical', 'chaotic'];
-  const shapeIndex = traits[12] % shapeTypes.length;
+  const shapeIndex = traits[9] % shapeTypes.length;
   const shape = shapeTypes[shapeIndex];
 
   switch (shape) {
     case 'round':
       return [
         `  ${pattern}${pattern}${pattern}  `,
-        ` ${pattern}${eyePattern[0]}${pattern}${eyePattern[1]}${pattern} `,
+        ` ${pattern}${eye}${pattern}${eye}${pattern} `,
         `${pattern}${pattern}${pattern}${pattern}${pattern}`,
         ` ${pattern}${pattern}${pattern}${pattern} `,
         `  ${pattern}  ${pattern}  `
@@ -74,7 +51,7 @@ export const generateCreatureASCII = (traits) => {
     case 'spiky':
       return [
         `  ▲${textVariant} ${pattern} ▲${textVariant}  `,
-        ` ${pattern}${eyePattern[0]}${pattern}${eyePattern[1]}${pattern} `,
+        ` ${pattern}${eye}${pattern}${eye}${pattern} `,
         `<${pattern}${pattern}${pattern}${pattern}>`,
         ` ▼${textVariant}${pattern}${pattern}${pattern}▼${textVariant} `,
         `  ${pattern}  ${pattern}  `
@@ -82,7 +59,7 @@ export const generateCreatureASCII = (traits) => {
     case 'tall':
       return [
         `  ${pattern}${pattern}  `,
-        ` ${pattern}${eyePattern[0]}${eyePattern[1]}${pattern} `,
+        ` ${pattern}${eye}${eye}${pattern} `,
         ` ${pattern}${pattern}${pattern} `,
         ` ${pattern}${pattern}${pattern} `,
         ` ${pattern}  ${pattern} `
@@ -90,7 +67,7 @@ export const generateCreatureASCII = (traits) => {
     case 'wide':
       return [
         ` ${pattern}${pattern}${pattern}${pattern}${pattern} `,
-        `${pattern}${eyePattern[0]}${pattern}${pattern}${eyePattern[1]}${pattern}`,
+        `${pattern}${eye}${pattern}${pattern}${eye}${pattern}`,
         `${pattern}${pattern}${pattern}${pattern}${pattern}${pattern}`,
         ` ${pattern}${pattern}${pattern}${pattern}${pattern} `,
         `  ${pattern}    ${pattern}  `
@@ -98,7 +75,7 @@ export const generateCreatureASCII = (traits) => {
     case 'angular':
       return [
         `  /${pattern}${pattern}\\  `,
-        ` ${pattern}${eyePattern[0]}${pattern}${eyePattern[1]}${pattern} `,
+        ` ${pattern}${eye}${pattern}${eye}${pattern} `,
         `/${pattern}${pattern}${pattern}${pattern}\\`,
         ` \\${pattern}${pattern}${pattern}/ `,
         `  ${pattern}  ${pattern}  `
@@ -106,7 +83,7 @@ export const generateCreatureASCII = (traits) => {
     case 'curved':
       return [
         `  ∩${textVariant}${pattern}${pattern}∩${textVariant}  `,
-        ` ${pattern}${eyePattern[0]}${pattern}${eyePattern[1]}${pattern} `,
+        ` ${pattern}${eye}${pattern}${eye}${pattern} `,
         `(${pattern}${pattern}${pattern}${pattern})`,
         ` ∪${textVariant}${pattern}${pattern}${pattern}∪${textVariant} `,
         `  ${pattern}  ${pattern}  `
@@ -114,7 +91,7 @@ export const generateCreatureASCII = (traits) => {
     case 'compact':
       return [
         ` ${pattern}${pattern}${pattern} `,
-        `${pattern}${eyePattern[0]}${eyePattern[1]}${pattern}`,
+        `${pattern}${eye}${eye}${pattern}`,
         `${pattern}${pattern}${pattern}${pattern}`,
         ` ${pattern}${pattern} `,
         ` ▪${textVariant}  ▪${textVariant} `
@@ -122,7 +99,7 @@ export const generateCreatureASCII = (traits) => {
     case 'elongated':
       return [
         `  ${pattern}${pattern}${pattern}${pattern}  `,
-        ` ${pattern}${eyePattern[0]}${pattern}${pattern}${eyePattern[1]}${pattern} `,
+        ` ${pattern}${eye}${pattern}${pattern}${eye}${pattern} `,
         `${pattern}${pattern}${pattern}${pattern}${pattern}${pattern}`,
         ` ${pattern}${pattern}${pattern}${pattern}${pattern} `,
         `  ${pattern}    ${pattern}  `
@@ -130,7 +107,7 @@ export const generateCreatureASCII = (traits) => {
     case 'hexagonal':
       return [
         `   /${pattern}${pattern}\\   `,
-        `  /${eyePattern[0]}${pattern}${eyePattern[1]}\\  `,
+        `  /${eye}${pattern}${eye}\\  `,
         ` |${pattern}${pattern}${pattern}${pattern}| `,
         `  \\${pattern}${pattern}${pattern}/  `,
         `   \\${pattern}${pattern}/   `
@@ -139,14 +116,14 @@ export const generateCreatureASCII = (traits) => {
       return [
         `     ▲${textVariant}     `,
         `   /${pattern}\\   `,
-        `  /${eyePattern[0]}${eyePattern[1]}\\  `,
+        `  /${eye}${eye}\\  `,
         ` /${pattern}${pattern}${pattern}\\ `,
         `/${pattern}${pattern}${pattern}${pattern}\\`
       ];
     case 'diamond':
       return [
         `   ◆${textVariant}${pattern}◆${textVariant}   `,
-        `  ◆${textVariant}${eyePattern[0]}${pattern}${eyePattern[1]}◆${textVariant}  `,
+        `  ◆${textVariant}${eye}${pattern}${eye}◆${textVariant}  `,
         ` ◆${textVariant}${pattern}${pattern}${pattern}${pattern}◆${textVariant} `,
         `  ◆${textVariant}${pattern}${pattern}${pattern}◆${textVariant}  `,
         `   ◆${textVariant}${pattern}◆${textVariant}   `
@@ -154,7 +131,7 @@ export const generateCreatureASCII = (traits) => {
     case 'crystalline':
       return [
         `  ◈${textVariant}${pattern}${pattern}◈${textVariant}  `,
-        ` ◈${textVariant}${eyePattern[0]}◈${textVariant}${eyePattern[1]}◈${textVariant} `,
+        ` ◈${textVariant}${eye}◈${textVariant}${eye}◈${textVariant} `,
         `◈${textVariant}${pattern}◈${textVariant}${pattern}◈${textVariant}${pattern}◈${textVariant}`,
         ` ◈${textVariant}${pattern}◈${textVariant}${pattern}◈${textVariant} `,
         `  ◈${textVariant}  ◈${textVariant}  `
@@ -162,7 +139,7 @@ export const generateCreatureASCII = (traits) => {
     case 'mechanical':
       return [
         ` [${pattern}${pattern}${pattern}] `,
-        `[${eyePattern[0]}]${pattern}[${eyePattern[1]}]`,
+        `[${eye}]${pattern}[${eye}]`,
         `[${pattern}${pattern}${pattern}${pattern}]`,
         ` |${pattern}${pattern}${pattern}| `,
         ` |_||_| `
@@ -170,12 +147,35 @@ export const generateCreatureASCII = (traits) => {
     default: // chaotic
       return [
         ` ◢${textVariant}${pattern}◣${textVariant}${pattern}◤${textVariant} `,
-        `◥${textVariant}${eyePattern[0]}◢${textVariant}${pattern}◣${textVariant}${eyePattern[1]}◤${textVariant}`,
+        `◥${textVariant}${eye}◢${textVariant}${pattern}◣${textVariant}${eye}◤${textVariant}`,
         `◢${textVariant}${pattern}◥${textVariant}◤${textVariant}${pattern}◣${textVariant}`,
         ` ◥${textVariant}${pattern}◢${textVariant}◣${textVariant}${pattern}◤${textVariant} `,
         `  ◥${textVariant}  ◤${textVariant}  `
       ];
   }
+};
+
+
+export const generateMoveNames = (traits) => {
+  const defenseNames = ['Barrier', 'Shield', 'Guard', 'Protect', 'Restore', 'Heal', 'Recover', 'Mend',
+    'Aegis', 'Ward', 'Fortify', 'Deflect', 'Absorb', 'Regenerate', 'Sanctuary', 'Bulwark',
+    'Armor', 'Cocoon', 'Mirror', 'Counter', 'Parry', 'Evade', 'Cloak', 'Veil'];
+  const attackPrefixes = ['Fire', 'Ice', 'Thunder', 'Shadow', 'Mega', 'Hyper', 'Ultra', 'Giga',
+    'Plasma', 'Cosmic', 'Chaos', 'Primal', 'Divine', 'Infernal', 'Spectral', 'Quantum',
+    'Vortex', 'Nebula', 'Crystal', 'Adamant', 'Ethereal', 'Temporal', 'Dimensional', 'Apocalypse'];
+  const attackSuffixes = ['Strike', 'Blast', 'Punch', 'Kick', 'Slash', 'Beam', 'Wave', 'Claw',
+    'Cannon', 'Storm', 'Barrage', 'Eruption', 'Cyclone', 'Meteor', 'Comet', 'Nova',
+    'Burst', 'Crush', 'Rend', 'Shatter', 'Devastate', 'Annihilate', 'Obliterate', 'Pulverize'];
+
+  return {
+    defense: defenseNames[traits[10] % defenseNames.length],
+    attack1: attackPrefixes[traits[11] % attackPrefixes.length] + ' ' +
+      attackSuffixes[traits[12] % attackSuffixes.length],
+    attack2: attackPrefixes[traits[13] % attackPrefixes.length] + ' ' +
+      attackSuffixes[traits[14] % attackSuffixes.length],
+    attack3: attackPrefixes[traits[15] % attackPrefixes.length] + ' ' +
+      attackSuffixes[traits[16] % attackSuffixes.length]
+  };
 };
 
 export const parseCreature = (creatureData, wasm) => {
