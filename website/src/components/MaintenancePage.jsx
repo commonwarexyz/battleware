@@ -192,20 +192,20 @@ const MaintenancePage = () => {
     >
       <div
         ref={logoRef}
-        className="absolute max-w-[11rem] rounded-none border-4 px-4 py-4 shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-opacity hover:opacity-95 sm:max-w-[16rem] sm:px-6 sm:py-6 md:max-w-[20rem] animate-dvd-glow cursor-pointer select-none"
+        className="absolute w-[65vw] max-w-[18rem] rounded-none border-4 px-4 py-4 shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-opacity hover:opacity-95 sm:w-auto sm:max-w-[20rem] sm:px-6 sm:py-6 md:max-w-[22rem] animate-dvd-glow cursor-pointer select-none"
         style={{ '--dvd-color': color, backgroundColor: color, borderColor: color }}
         onClick={handleLogoClick}
       >
         <div className="flex flex-col items-center text-center leading-tight text-black">
-          <p className="text-sm font-bold uppercase tracking-wider sm:text-2xl md:text-3xl">
+          <p className="text-base font-bold uppercase tracking-wide sm:text-2xl md:text-3xl">
             SYSTEM MAINTENANCE
           </p>
-          <p className="mt-2 text-[0.7rem] sm:mt-4 sm:text-base">
+          <p className="mt-2 text-xs leading-snug sm:mt-4 sm:text-sm">
             Follow{' '}
             <span className="underline transition-opacity duration-150 hover:opacity-80">
               @commonwarexyz
             </span>{' '}
-            for updates and new releases.
+            for updates.
           </p>
         </div>
       </div>
