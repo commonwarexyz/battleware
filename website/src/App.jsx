@@ -8,6 +8,7 @@ import BattleScreen from './components/BattleScreen';
 import GameOverScreen from './components/GameOverScreen';
 import LoadingScreen from './components/LoadingScreen';
 import EventExplorer from './components/EventExplorer';
+import MaintenancePage from './components/MaintenancePage';
 
 function App() {
   const [gameState, setGameState] = useState('loading');
@@ -119,9 +120,23 @@ function App() {
         // Don't set up event handlers here - we'll do it in a separate useEffect
       } catch (err) {
         console.error('Failed to initialize client:', err);
-        console.error('Error details:', err.message, err.stack);
-        setError(`Failed to connect to server: ${err.message || 'Unknown error'}`);
-        setGameState('error');
+        console.error('Error details:', err?.message, err?.stack);
+
+        const message = err?.message || 'Unknown error';
+        const normalizedMessage = typeof message === 'string' ? message.toLowerCase() : '';
+        const isNetworkError =
+          err instanceof TypeError ||
+          normalizedMessage.includes('network') ||
+          normalizedMessage.includes('fetch') ||
+          normalizedMessage.includes('socket') ||
+          normalizedMessage.includes('connect');
+
+        if (isNetworkError) {
+          setGameState('maintenance');
+        } else {
+          setError(`Failed to connect to server: ${message}`);
+          setGameState('error');
+        }
       }
     }
 
@@ -299,6 +314,10 @@ function App() {
 
   if (gameState === 'loading') {
     return <LoadingScreen />;
+  }
+
+  if (gameState === 'maintenance') {
+    return <MaintenancePage />;
   }
 
   if (gameState === 'error') {
