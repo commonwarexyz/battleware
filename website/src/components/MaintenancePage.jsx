@@ -186,23 +186,27 @@ const MaintenancePage = () => {
   }, []);
 
   return (
-    <div className="dvd-container" ref={containerRef}>
+    <div
+      ref={containerRef}
+      className="fixed inset-0 h-screen w-screen overflow-hidden bg-black font-mono"
+    >
       <div
-        className="dvd-logo"
         ref={logoRef}
-        style={{
-          color: color,
-          borderColor: color,
-        }}
+        className="absolute max-w-[11rem] rounded-none border-4 px-4 py-4 shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-opacity hover:opacity-95 sm:max-w-[16rem] sm:px-6 sm:py-6 md:max-w-[20rem] animate-dvd-glow cursor-pointer select-none"
+        style={{ '--dvd-color': color, backgroundColor: color, borderColor: color }}
         onClick={handleLogoClick}
       >
-        <div className="logo-content">
-          <div className="maintenance-text">
-            <p>SYSTEM MAINTENANCE</p>
-            <p className="small-text">
-              Follow <span className="link-text">@commonwarexyz</span> for updates and new releases.
-            </p>
-          </div>
+        <div className="flex flex-col items-center text-center leading-tight text-black">
+          <p className="text-sm font-bold uppercase tracking-wider sm:text-2xl md:text-3xl">
+            SYSTEM MAINTENANCE
+          </p>
+          <p className="mt-2 text-[0.7rem] sm:mt-4 sm:text-base">
+            Follow{' '}
+            <span className="underline transition-opacity duration-150 hover:opacity-80">
+              @commonwarexyz
+            </span>{' '}
+            for updates and new releases.
+          </p>
         </div>
       </div>
     </div>
