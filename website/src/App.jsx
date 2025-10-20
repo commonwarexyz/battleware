@@ -16,7 +16,6 @@ function App() {
   const [player, setPlayer] = useState(null);
   const [account, setAccount] = useState(null);
   const [battle, setBattle] = useState(null);
-  const [error, setError] = useState(null);
   const [settlementEvent, setSettlementEvent] = useState(null);
 
   // Initialize client on mount with high priority
@@ -121,22 +120,7 @@ function App() {
       } catch (err) {
         console.error('Failed to initialize client:', err);
         console.error('Error details:', err?.message, err?.stack);
-
-        const message = err?.message || 'Unknown error';
-        const normalizedMessage = typeof message === 'string' ? message.toLowerCase() : '';
-        const isNetworkError =
-          err instanceof TypeError ||
-          normalizedMessage.includes('network') ||
-          normalizedMessage.includes('fetch') ||
-          normalizedMessage.includes('socket') ||
-          normalizedMessage.includes('connect');
-
-        if (isNetworkError) {
-          setGameState('maintenance');
-        } else {
-          setError(`Failed to connect to server: ${message}`);
-          setGameState('error');
-        }
+        setGameState('maintenance');
       }
     }
 
@@ -318,17 +302,6 @@ function App() {
 
   if (gameState === 'maintenance') {
     return <MaintenancePage />;
-  }
-
-  if (gameState === 'error') {
-    return (
-      <div className="min-h-screen bg-retro-blue flex items-center justify-center p-2 sm:p-4 lg:p-8">
-        <div className="bg-retro-white border-4 border-retro-white p-2 sm:p-4 lg:p-8 max-w-[800px] w-full">
-          <h1 className="text-xl sm:text-3xl uppercase mb-4 text-retro-blue">ERROR</h1>
-          <p className="text-sm sm:text-base text-retro-blue">{error}</p>
-        </div>
-      </div>
-    );
   }
 
   return (
