@@ -1,0 +1,15 @@
+.animate-dvd-glow {
+  animation: dvd-glow 3s infinite ease-in-out;
+}
+
+@keyframes dvd-glow {
+  0% {
+    box-shadow: 0 0 5px var(--dvd-color, currentColor);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--dvd-color, currentColor);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--dvd-color, currentColor);
+  }
+}

@@ -8,6 +8,7 @@ import BattleScreen from './components/BattleScreen';
 import GameOverScreen from './components/GameOverScreen';
 import LoadingScreen from './components/LoadingScreen';
 import EventExplorer from './components/EventExplorer';
+import MaintenancePage from './components/MaintenancePage';
 
 function App() {
   const [gameState, setGameState] = useState('loading');
@@ -15,7 +16,6 @@ function App() {
   const [player, setPlayer] = useState(null);
   const [account, setAccount] = useState(null);
   const [battle, setBattle] = useState(null);
-  const [error, setError] = useState(null);
   const [settlementEvent, setSettlementEvent] = useState(null);
 
   // Initialize client on mount with high priority
@@ -119,9 +119,8 @@ function App() {
         // Don't set up event handlers here - we'll do it in a separate useEffect
       } catch (err) {
         console.error('Failed to initialize client:', err);
-        console.error('Error details:', err.message, err.stack);
-        setError(`Failed to connect to server: ${err.message || 'Unknown error'}`);
-        setGameState('error');
+        console.error('Error details:', err?.message, err?.stack);
+        setGameState('maintenance');
       }
     }
 
@@ -301,15 +300,8 @@ function App() {
     return <LoadingScreen />;
   }
 
-  if (gameState === 'error') {
-    return (
-      <div className="min-h-screen bg-retro-blue flex items-center justify-center p-2 sm:p-4 lg:p-8">
-        <div className="bg-retro-white border-4 border-retro-white p-2 sm:p-4 lg:p-8 max-w-[800px] w-full">
-          <h1 className="text-xl sm:text-3xl uppercase mb-4 text-retro-blue">ERROR</h1>
-          <p className="text-sm sm:text-base text-retro-blue">{error}</p>
-        </div>
-      </div>
-    );
+  if (gameState === 'maintenance') {
+    return <MaintenancePage />;
   }
 
   return (
