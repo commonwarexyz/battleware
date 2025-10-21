@@ -7,6 +7,7 @@ const MaintenancePage = () => {
   const positionRef = useRef({ x: 50, y: 50 });
   const directionRef = useRef({ x: 1, y: 1 });
   const [color, setColor] = useState('#0000ee');
+  const [logoVisible, setLogoVisible] = useState(false);
   const currentColorRef = useRef('#0000ee');
   const animationFrameRef = useRef(null);
   const initializedRef = useRef(false);
@@ -59,6 +60,7 @@ const MaintenancePage = () => {
         initializedRef.current = true;
         logoRef.current.style.left = `${positionRef.current.x}px`;
         logoRef.current.style.top = `${positionRef.current.y}px`;
+        setLogoVisible(true);
       }
     }, 100);
 
@@ -89,7 +91,7 @@ const MaintenancePage = () => {
     };
 
     const animate = () => {
-      if (!containerRef.current || !logoRef.current) {
+      if (!containerRef.current || !logoRef.current || !initializedRef.current) {
         animationFrameRef.current = requestAnimationFrame(animate);
         return;
       }
@@ -192,7 +194,7 @@ const MaintenancePage = () => {
     >
       <div
         ref={logoRef}
-        className="absolute w-[65vw] max-w-[18rem] rounded-none border-4 px-4 py-4 shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-opacity hover:opacity-95 sm:w-auto sm:max-w-[20rem] sm:px-6 sm:py-6 md:max-w-[22rem] animate-dvd-glow cursor-pointer select-none"
+        className={`absolute w-[65vw] max-w-[18rem] rounded-none border-4 px-4 py-4 shadow-[0_0_20px_rgba(255,255,255,0.15)] ${logoVisible ? 'opacity-100' : 'opacity-0'} hover:opacity-95 sm:w-auto sm:max-w-[20rem] sm:px-6 sm:py-6 md:max-w-[22rem] animate-dvd-glow cursor-pointer select-none transition-none`}
         style={{ '--dvd-color': color, backgroundColor: color, borderColor: color }}
         onClick={handleLogoClick}
       >
