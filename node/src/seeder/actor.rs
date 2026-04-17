@@ -400,17 +400,95 @@ mod tests {
     use super::UploadTracker;
 
     #[test]
+    fn upload_tracker_advances_on_in_order_completion() {
+        let mut tracker = UploadTracker::new(10);
+
+        // The happy path: the exact view we were waiting on finishes, so the
+        // frontier advances by one and no temporary out-of-order state remains.
+        assert_eq!(tracker.record_uploaded(10), Some(10));
+        assert_eq!(tracker.next_unconfirmed_upload(), 11);
+        assert!(!tracker.is_waiting_on_out_of_order_completion(10));
+    }
+
+    #[test]
+    fn upload_tracker_ignores_duplicate_confirmations() {
+        let mut tracker = UploadTracker::new(10);
+
+        // Once a view has already advanced the frontier, repeating the same
+        // completion should be a no-op.
+        assert_eq!(tracker.record_uploaded(10), Some(10));
+        assert_eq!(tracker.record_uploaded(10), None);
+        assert_eq!(tracker.next_unconfirmed_upload(), 11);
+        assert!(!tracker.is_waiting_on_out_of_order_completion(10));
+    }
+
+    #[test]
+    fn upload_tracker_stops_at_the_next_missing_view() {
+        let mut tracker = UploadTracker::new(10);
+
+        // Assume uploads 10, 11, 12, and 13 have already been started. The tracker
+        // only sees completion order. Here 11 and 13 finish early, but 12 is still
+        // missing. Once 10 arrives we can only advance through 11, and 13 must
+        // remain pending.
+        assert_eq!(tracker.record_uploaded(11), None);
+        assert_eq!(tracker.record_uploaded(13), None);
+        assert!(tracker.is_waiting_on_out_of_order_completion(11));
+        assert!(tracker.is_waiting_on_out_of_order_completion(13));
+        assert_eq!(tracker.record_uploaded(10), Some(11));
+        assert_eq!(tracker.next_unconfirmed_upload(), 12);
+        assert!(!tracker.is_waiting_on_out_of_order_completion(10));
+        assert!(!tracker.is_waiting_on_out_of_order_completion(11));
+        assert!(tracker.is_waiting_on_out_of_order_completion(13));
+    }
+
+    #[test]
+    fn upload_tracker_consumes_later_contiguous_completions_when_gap_closes() {
+        let mut tracker = UploadTracker::new(10);
+
+        // Assume uploads 10, 11, 12, and 13 are already in flight. After advancing
+        // to 11, receiving 12 should also consume the already-finished 13 and move
+        // the frontier to 14.
+        assert_eq!(tracker.record_uploaded(11), None);
+        assert_eq!(tracker.record_uploaded(13), None);
+        assert!(tracker.is_waiting_on_out_of_order_completion(11));
+        assert!(tracker.is_waiting_on_out_of_order_completion(13));
+        assert_eq!(tracker.record_uploaded(10), Some(11));
+        assert!(tracker.is_waiting_on_out_of_order_completion(13));
+        assert_eq!(tracker.record_uploaded(12), Some(13));
+        assert_eq!(tracker.next_unconfirmed_upload(), 14);
+        assert!(!tracker.is_waiting_on_out_of_order_completion(12));
+        assert!(!tracker.is_waiting_on_out_of_order_completion(13));
+    }
+
+    #[test]
     fn upload_tracker_advances_past_out_of_order_completions_once_gap_closes() {
         let mut tracker = UploadTracker::new(10);
 
-        // 11 and 12 finish before 10. Once 10 arrives, the tracker should advance
-        // straight through 12 and clear the temporary out-of-order state.
+        // Assume uploads 10, 11, and 12 are already in flight. 11 and 12 finish
+        // before 10. Once 10 arrives, the tracker should advance straight through
+        // 12 and clear the temporary out-of-order state.
         assert_eq!(tracker.record_uploaded(11), None);
         assert_eq!(tracker.record_uploaded(12), None);
+        assert!(tracker.is_waiting_on_out_of_order_completion(11));
+        assert!(tracker.is_waiting_on_out_of_order_completion(12));
         assert_eq!(tracker.record_uploaded(10), Some(12));
         assert_eq!(tracker.next_unconfirmed_upload(), 13);
         assert!(!tracker.is_waiting_on_out_of_order_completion(10));
         assert!(!tracker.is_waiting_on_out_of_order_completion(11));
         assert!(!tracker.is_waiting_on_out_of_order_completion(12));
+    }
+
+    #[test]
+    fn upload_tracker_handles_high_views_without_overflowing() {
+        let mut tracker = UploadTracker::new(u64::MAX - 2);
+
+        // Exercise the checked_add path near the upper bound without crossing it.
+        // Advancing from MAX-2 through a previously completed MAX-1 should leave
+        // the tracker waiting on MAX.
+        assert_eq!(tracker.record_uploaded(u64::MAX - 1), None);
+        assert!(tracker.is_waiting_on_out_of_order_completion(u64::MAX - 1));
+        assert_eq!(tracker.record_uploaded(u64::MAX - 2), Some(u64::MAX - 1));
+        assert_eq!(tracker.next_unconfirmed_upload(), u64::MAX);
+        assert!(!tracker.is_waiting_on_out_of_order_completion(u64::MAX - 1));
     }
 }
