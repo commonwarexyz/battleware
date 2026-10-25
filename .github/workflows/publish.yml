@@ -4,12 +4,18 @@ on:
   push:
     branches: [ "main" ]
 
+# Least privilege: CI only needs to check out and build; for coverage the codecov
+# upload authorizes itself with the CODECOV_TOKEN secret, and for publish the
+# registry write is authorized by CARGO_REGISTRY_TOKEN rather than GITHUB_TOKEN.
+permissions:
+  contents: read
+
 jobs:
   All:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
     - name: Get Rust version
       id: rust-version
       run: echo "rust_version=$(rustc --version)" >> "$GITHUB_OUTPUT"

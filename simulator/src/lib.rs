@@ -166,10 +166,16 @@ impl Simulator {
         // Get required nodes
         let required_digest_positions =
             digests_required_for_proof::<Digest>(progress.state_end_op, *loc, *loc);
-        let required_digests = required_digest_positions
-            .iter()
-            .map(|pos| state.nodes.get(pos).cloned().unwrap())
-            .collect::<Vec<_>>();
+        // Guard the database lookup: a summary whose node digests have not
+        // been stored yet (racing summary/event submission) resolves to no
+        // lookup result instead of a panic.
+        let mut required_digests = Vec::with_capacity(required_digest_positions.len());
+        for pos in required_digest_positions {
+            match state.nodes.get(&pos) {
+                Some(digest) => required_digests.push(*digest),
+                None => return None,
+            }
+        }
 
         // Construct proof
         let proof = create_proof(progress.state_end_op, required_digests);
